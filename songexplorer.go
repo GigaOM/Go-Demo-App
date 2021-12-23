@@ -2,12 +2,22 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 )
 
 func main() {
+	sqlPath := "root:root@/todolist?charset=utf8&parseTime=True&loc=Local"
+	db, err := gorm.Open("mysql", sqlPath)
+
+	if err != nil {
+		log.Fatal("Connection to database failed")
+	}
+
+	defer db.Close()
 
 	router := mux.NewRouter()
 	router.HandleFunc("/createsong", songExplorerCreate).Methods("POST")
