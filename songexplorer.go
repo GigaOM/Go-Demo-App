@@ -2,22 +2,26 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
+// Database Connection
+var dsn = "mike:Password1@tcp(benchmarktest01.database.windows.net:1433)/benchmarks?charset=utf8mb4&parseTime=True&loc=Local"
+var db, _ = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+type SongExplorerModel struct {
+	Id       int
+	Year     string
+	SongName string
+}
+
 func main() {
-	sqlPath := "root:root@/todolist?charset=utf8&parseTime=True&loc=Local"
-	db, err := gorm.Open("mysql", sqlPath)
 
-	if err != nil {
-		log.Fatal("Connection to database failed")
-	}
-
-	defer db.Close()
+	// fmt.Println(db)
 
 	router := mux.NewRouter()
 	router.HandleFunc("/createsong", songExplorerCreate).Methods("POST")
@@ -32,7 +36,11 @@ func songExplorerGet(w http.ResponseWriter, r *http.Request) {
 }
 
 func songExplorerCreate(w http.ResponseWriter, r *http.Request) {
-
+	todo := &SongExplorerModel{Id: 1, Year: "2021", SongName: "MySong"}
+	db.Create(&todo)
+	// result := db.Last(&todo)
+	// w.Header().Set("Content-Type", "application/json")
+	// json.NewEncoder(w).Encode(result.)
 	fmt.Println("WIP")
 }
 
