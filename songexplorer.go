@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -14,7 +15,6 @@ var dsn = "mike:Password1@tcp(benchmarktest01.mysql.database.azure.com:3306)/ben
 var db, _ = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 type SongExplorerModel struct {
-	Id       int
 	Year     string
 	SongName string
 }
@@ -36,12 +36,13 @@ func songExplorerGet(w http.ResponseWriter, r *http.Request) {
 }
 
 func songExplorerCreate(w http.ResponseWriter, r *http.Request) {
-	todo := &SongExplorerModel{Id: 1, Year: "2021", SongName: "MySong"}
+
+	todo := &SongExplorerModel{Year: "2021", SongName: "MySong"}
 	db.Create(&todo)
-	// result := db.Last(&todo)
-	// w.Header().Set("Content-Type", "application/json")
-	// json.NewEncoder(w).Encode(result.)
-	fmt.Println("WIP")
+
+	json.NewEncoder(w).Encode(todo)
+
+	fmt.Println("Endoint hit: ", todo)
 }
 
 func songExplorerUpdate(w http.ResponseWriter, r *http.Request) {
