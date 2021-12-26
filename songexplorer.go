@@ -10,7 +10,7 @@ import (
 )
 
 // Database Connection
-var dsn = "mike:Password1@tcp(benchmarktest01.database.windows.net:1433)/benchmarks?charset=utf8mb4&parseTime=True&loc=Local"
+var dsn = "mike@benchmarktest01:Password1@tcp(benchmarktest01.mysql.database.azure.com:3306)/benchmarktest01?charset=utf8mb4 parseTime=True&loc=Local"
 var db, _ = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 type SongExplorerModel struct {
