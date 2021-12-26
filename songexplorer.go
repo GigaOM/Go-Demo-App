@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -21,18 +21,19 @@ type SongExplorerModel struct {
 
 func main() {
 
-	// fmt.Println(db)
+	http.HandleFunc("/createsong", songExplorerCreate)
+	http.HandleFunc("/updatesong", songExplorerUpdate)
+	http.HandleFunc("/deletesong", songExplorerDelete)
+	http.HandleFunc("/getsong", songExplorerGet)
 
-	router := mux.NewRouter()
-	router.HandleFunc("/createsong", songExplorerCreate).Methods("POST")
-	router.HandleFunc("/updatesong", songExplorerUpdate).Methods("POST")
-	router.HandleFunc("/deletesong", songExplorerDelete).Methods("POST")
-	router.HandleFunc("/getsong", songExplorerGet).Methods("GET")
-	http.ListenAndServe(":8000", router)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func songExplorerGet(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("WIP")
+	var songs SongExplorerModel
+
+	song := db.Find(&songs)
+	fmt.Print(song)
 }
 
 func songExplorerCreate(w http.ResponseWriter, r *http.Request) {
