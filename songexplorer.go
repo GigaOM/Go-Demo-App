@@ -33,8 +33,11 @@ func main() {
 
 func songExplorerGet(w http.ResponseWriter, r *http.Request) {
 
-	song := db.QueryFields
-	fmt.Print(song)
+	var songs = &SongExplorerModel{}
+
+	db.Table("song_explorer_models").Find(&songs)
+	json.NewEncoder(w).Encode(songs)
+	fmt.Println(songs)
 }
 
 func songExplorerCreate(w http.ResponseWriter, r *http.Request) {
