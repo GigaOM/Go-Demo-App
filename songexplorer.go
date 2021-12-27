@@ -36,6 +36,11 @@ func songExplorerGet(w http.ResponseWriter, r *http.Request) {
 	var songs = &SongExplorerModel{}
 
 	db.Table("song_explorer_models").Find(&songs)
+
+	if err := db.Find(&songs).Error; err != nil {
+		log.Fatalln(err)
+	}
+
 	json.NewEncoder(w).Encode(songs)
 	fmt.Println(songs)
 }
@@ -47,6 +52,9 @@ func songExplorerCreate(w http.ResponseWriter, r *http.Request) {
 		SongName: "MySong"}
 
 	db.Create(&songExplorer)
+	if err := db.Create(&songExplorer).Error; err != nil {
+		log.Fatalln(err)
+	}
 
 	json.NewEncoder(w).Encode(songExplorer)
 
