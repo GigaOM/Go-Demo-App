@@ -15,6 +15,7 @@ var dsn = "mike:Password1@tcp(benchmarktest01.mysql.database.azure.com:3306)/ben
 var db, _ = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 type SongExplorerModel struct {
+	gorm.Model
 	Year     string
 	SongName string
 }
@@ -22,7 +23,8 @@ type SongExplorerModel struct {
 func main() {
 
 	http.HandleFunc("/createsong", songExplorerCreate)
-	http.HandleFunc("/updatesong", songExplorerUpdate)
+	http.HandleFunc("/updatesongyear", songExplorerUpdateYear)
+	http.HandleFunc("/updatesongname", songExplorerUpdateSongName)
 	http.HandleFunc("/deletesong", songExplorerDelete)
 	http.HandleFunc("/getsong", songExplorerGet)
 
@@ -30,28 +32,43 @@ func main() {
 }
 
 func songExplorerGet(w http.ResponseWriter, r *http.Request) {
-	var songs SongExplorerModel
 
-	song := db.Find(&songs)
+	song := db.QueryFields
 	fmt.Print(song)
 }
 
 func songExplorerCreate(w http.ResponseWriter, r *http.Request) {
 
-	todo := SongExplorerModel{
+	songExplorer := SongExplorerModel{
 		Year:     "2021",
 		SongName: "MySong"}
 
-	db.Create(&todo)
+	db.Create(&songExplorer)
 
-	json.NewEncoder(w).Encode(todo)
+	json.NewEncoder(w).Encode(songExplorer)
 
-	fmt.Println("Endoint hit: ", todo)
+	fmt.Println("Fields Added ", songExplorer)
 }
 
-func songExplorerUpdate(w http.ResponseWriter, r *http.Request) {
+func songExplorerUpdateYear(w http.ResponseWriter, r *http.Request) {
+	songExplorer := SongExplorerModel{
+		Year:     "",
+		SongName: "",
+	}
 
-	fmt.Println("WIP")
+	year := ""
+	songExplorer.Year = year
+
+}
+
+func songExplorerUpdateSongName(w http.ResponseWriter, r *http.Request) {
+	songExplorer := SongExplorerModel{
+		Year:     "",
+		SongName: "",
+	}
+
+	songName := ""
+	songExplorer.SongName = songName
 }
 
 func songExplorerDelete(w http.ResponseWriter, r *http.Request) {
