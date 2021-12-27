@@ -38,7 +38,10 @@ func songExplorerGet(w http.ResponseWriter, r *http.Request) {
 
 func songExplorerCreate(w http.ResponseWriter, r *http.Request) {
 
-	todo := &SongExplorerModel{Year: "2021", SongName: "MySong"}
+	todo := SongExplorerModel{
+		Year:     "2021",
+		SongName: "MySong"}
+
 	db.Create(&todo)
 
 	json.NewEncoder(w).Encode(todo)
