@@ -27,8 +27,14 @@ func main() {
 	http.HandleFunc("/updatesongname", songExplorerUpdateSongName)
 	http.HandleFunc("/deletesong", songExplorerDelete)
 	http.HandleFunc("/getsong", songExplorerGet)
+	http.HandleFunc("/home", home)
 
+	http.Handle("/", http.FileServer(http.Dir("./static")))
 	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func home(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "./static/index.html")
 }
 
 func songExplorerGet(w http.ResponseWriter, r *http.Request) {
